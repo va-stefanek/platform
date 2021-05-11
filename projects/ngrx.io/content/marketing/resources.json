@@ -8,7 +8,7 @@
           "angular-in-depth": {
             "title": "Angular in Depth",
             "desc": "All articles in Angular in Depth tagged with NgRx",
-            "url": "https://indepth.dev/ngrx/",
+            "url": "https://indepth.dev/search?query=ngrx",
             "rev": true
           },
           "ngrx-best-practices-for-enterprise-angular-applications": {
@@ -128,12 +128,25 @@
               "Spartacus is a lean, Angular-based JavaScript storefront for SAP Commerce Cloud that communicates exclusively through the Commerce REST API.",
             "url": "https://github.com/SAP/cloud-commerce-spartacus-storefront",
             "rev": true
+          },
+          "todomvc-app": {
+            "title": "TodoMVC app",
+            "desc":
+              "The TodoMVC app using NgRx",
+            "url": "https://github.com/bbaia/todomvc-angular-ngrx",
+            "rev": true
           }
         }
       },
       "Libraries": {
         "order": 5,
         "resources": {
+          "ngrx-child-selectors": {
+            "title": "ngrx-child-selectors",
+            "desc": "A plugin for easy creation of child selectors",
+            "url": "https://github.com/markostanimirovic/ngrx-child-selectors",
+            "rev": true
+          },
           "ngrx-enums": {
             "title": "ngrx-enums",
             "desc":

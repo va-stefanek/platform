@@ -6,6 +6,7 @@ import {
   NextObserver,
   Observer,
   of,
+  throwError,
   Unsubscribable,
 } from 'rxjs';
 
@@ -22,7 +23,7 @@ import {
 class CdAwareImplementation<U> implements OnDestroy {
   public renderedValue: any = undefined;
   public error: any = undefined;
-  public completed: boolean = false;
+  public completed = false;
   private readonly subscription: Unsubscribable;
   public cdAware: CdAware<U | undefined | null>;
   resetContextObserver: NextObserver<any> = {
@@ -108,6 +109,16 @@ describe('CdAware', () => {
       expect(cdAwareImplementation.renderedValue).toBe(42);
     });
 
+    it('should render_creator emitted value from passed promise without changing it', (done: any) => {
+      cdAwareImplementation.cdAware.nextPotentialObservable(
+        Promise.resolve(42)
+      );
+      setTimeout(() => {
+        expect(cdAwareImplementation.renderedValue).toBe(42);
+        done();
+      });
+    });
+
     it('should render_creator undefined as value when a new observable NEVER was passed (as no value ever was emitted from new observable)', () => {
       cdAwareImplementation.cdAware.nextPotentialObservable(of(42));
       expect(cdAwareImplementation.renderedValue).toBe(42);
@@ -134,13 +145,11 @@ describe('CdAware', () => {
     });
 
     it('error handling', () => {
+      cdAwareImplementation.cdAware.nextPotentialObservable(
+        throwError('Error!')
+      );
       expect(cdAwareImplementation.renderedValue).toBe(undefined);
-      cdAwareImplementation.cdAware.subscribe({
-        error: (e: Error) => expect(e).toBeDefined(),
-      });
-      expect(cdAwareImplementation.renderedValue).toBe(undefined);
-      // @TODO use this line
-      // expect(cdAwareImplementation.error).toBe(ArgumentNotObservableError);
+      expect(cdAwareImplementation.error).toBe('Error!');
       expect(cdAwareImplementation.completed).toBe(false);
     });
 

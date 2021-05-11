@@ -48,7 +48,7 @@ export default function (): Rule {
 function findMetaReducersImportStatements(
   sourceFile: ts.SourceFile,
   createChange: (node: ts.Node) => ReplaceChange,
-  logger: logging.LoggerApi
+  logger: any
 ) {
   let canRunSchematics = false;
 
@@ -59,11 +59,13 @@ function findMetaReducersImportStatements(
       canRunSchematics = Boolean(
         p.importClause &&
           p.importClause.namedBindings &&
-          (p.importClause!.namedBindings! as ts.NamedImports).elements
+          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+          (p.importClause!.namedBindings as ts.NamedImports).elements
       );
       return canRunSchematics;
     })
     .map((p) =>
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       (p.importClause!.namedBindings! as ts.NamedImports).elements.filter(
         isMetaReducersImportSpecifier
       )
@@ -104,7 +106,7 @@ function findMetaReducersAssignment(
   sourceFile: ts.SourceFile,
   createChange: (node: ts.Node) => ReplaceChange
 ) {
-  let changes: ReplaceChange[] = [];
+  const changes: ReplaceChange[] = [];
   ts.forEachChild(sourceFile, (node) => findMetaReducers(node, changes));
   return changes;
 

@@ -464,6 +464,10 @@
       "title": "Migrations",
       "children": [
         {
+          "title": "V12",
+          "url": "guide/migration/v12"
+        },
+        {
           "title": "V11",
           "url": "guide/migration/v11"
         },
@@ -578,6 +582,10 @@
     }
   ],
   "docVersions": [
+    {
+      "title": "v10",
+      "url": "https://v10.ngrx.io"
+    },
     {
       "title": "v9",
       "url": "https://v9.ngrx.io"

@@ -126,6 +126,7 @@ export class ComponentStore<T extends object> implements OnDestroy {
         )
         .subscribe({
           next: ([value, currentState]) => {
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
             this.stateSubject$.next(updaterFn(currentState, value!));
           },
           error: (error: Error) => {
@@ -174,19 +175,20 @@ export class ComponentStore<T extends object> implements OnDestroy {
    * @throws Error if the state is not initialized.
    */
   patchState(
-    partialStateOrUpdaterFn: Partial<T> | ((state: T) => Partial<T>)
+    partialStateOrUpdaterFn:
+      | Partial<T>
+      | Observable<Partial<T>>
+      | ((state: T) => Partial<T>)
   ): void {
-    this.setState((state) => {
-      const patchedState =
-        typeof partialStateOrUpdaterFn === 'function'
-          ? partialStateOrUpdaterFn(state)
-          : partialStateOrUpdaterFn;
+    const patchedState =
+      typeof partialStateOrUpdaterFn === 'function'
+        ? partialStateOrUpdaterFn(this.get())
+        : partialStateOrUpdaterFn;
 
-      return {
-        ...state,
-        ...patchedState,
-      };
-    });
+    this.updater((state, partialState: Partial<T>) => ({
+      ...state,
+      ...partialState,
+    }))(patchedState);
   }
 
   protected get(): T;
@@ -200,6 +202,7 @@ export class ComponentStore<T extends object> implements OnDestroy {
     this.stateSubject$.pipe(take(1)).subscribe((state) => {
       value = projector ? projector(state) : state;
     });
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     return value!;
   }
 
@@ -265,7 +268,7 @@ export class ComponentStore<T extends object> implements OnDestroy {
   /**
    * Creates an effect.
    *
-   * This effect is subscribed to for the life of the @Component.
+   * This effect is subscribed to throughout the lifecycle of the ComponentStore.
    * @param generator A function that takes an origin Observable input and
    *     returns an Observable. The Observable that is returned will be
    *     subscribed to for the life of the component.

@@ -39,7 +39,7 @@ describe('createAction()', () => {
       expectSnippet(`
         const foo = createAction('FOO', props<{ type: number }>());
       `).toFail(
-        / Type 'Props<\{ type: number; \}>' is not assignable to type '"type property is not allowed in action creators"'/
+        / Type 'ActionCreatorProps<\{ type: number; \}>' is not assignable to type '"type property is not allowed in action creators"'/
       );
     });
 
@@ -47,7 +47,7 @@ describe('createAction()', () => {
       expectSnippet(`
         const foo = createAction('FOO', props<[]>());
       `).toFail(
-        /Type 'Props<\[\]>' is not assignable to type '"arrays are not allowed in action creators"'/
+        /Type 'ActionCreatorProps<\[\]>' is not assignable to type '"arrays are not allowed in action creators"'/
       );
     });
 
@@ -55,7 +55,7 @@ describe('createAction()', () => {
       expectSnippet(`
         const foo = createAction('FOO', props<{}>());
       `).toFail(
-        /Type 'Props<\{\}>' is not assignable to type '"empty objects are not allowed in action creators"'/
+        /Type 'ActionCreatorProps<\{\}>' is not assignable to type '"empty objects are not allowed in action creators"'/
       );
     });
   });
@@ -88,15 +88,21 @@ describe('createAction()', () => {
       expectSnippet(`
         const foo = createAction('FOO', (type: string) => ({type}));
       `).toFail(
-        /Type '\(type: string\) => \{ type: string; \}' is not assignable to type '"type property is not allowed in action creators"'/
+        /Type '\{ type: string; \}' is not assignable to type '"type property is not allowed in action creators"'/
       );
+    });
+
+    it('should allow default parameters', () => {
+      expectSnippet(`
+        const foo = createAction('FOO', (bar = 3) => ({bar}));
+      `).toSucceed();
     });
 
     it('should not allow arrays', () => {
       expectSnippet(`
         const foo = createAction('FOO', () => [ ]);
       `).toFail(
-        /Type '\(\) => any\[\]' is not assignable to type '"arrays are not allowed in action creators"'/
+        /Type 'any\[\]' is not assignable to type '"arrays are not allowed in action creators"'/
       );
     });
   });

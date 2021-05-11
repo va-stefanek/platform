@@ -8,10 +8,11 @@ export {
   Creator,
   MetaReducer,
   NotAllowedCheck,
-  Props,
+  ActionCreatorProps,
   Selector,
   SelectorWithProps,
   RuntimeChecks,
+  FunctionWithParametersType,
 } from './models';
 export { createAction, props, union } from './action_creator';
 export { Store, select } from './store';
@@ -48,6 +49,7 @@ export {
   FEATURE_REDUCERS,
   USER_PROVIDED_META_REDUCERS,
   USER_RUNTIME_CHECKS,
+  ACTIVE_RUNTIME_CHECKS,
 } from './tokens';
 export {
   StoreModule,
@@ -55,5 +57,6 @@ export {
   StoreFeatureModule,
   RootStoreConfig,
   StoreConfig,
+  FeatureSlice,
 } from './store_module';
-export { On, on, createReducer } from './reducer_creator';
+export { ReducerTypes, on, createReducer } from './reducer_creator';

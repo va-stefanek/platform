@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/naming-convention */
+// disabled because we have lowercase generics for `select`
 import { Injectable, Provider } from '@angular/core';
 import { Observable, Observer, Operator } from 'rxjs';
 import { distinctUntilChanged, map, pluck } from 'rxjs/operators';
@@ -8,7 +10,8 @@ import { ReducerManager } from './reducer_manager';
 import { StateObservable } from './state';
 
 @Injectable()
-export class Store<T = object> extends Observable<T>
+export class Store<T = object>
+  extends Observable<T>
   implements Observer<Action> {
   constructor(
     state$: StateObservable,
@@ -21,6 +24,9 @@ export class Store<T = object> extends Observable<T>
   }
 
   select<K>(mapFn: (state: T) => K): Observable<K>;
+  /**
+   * @deprecated Selectors with props are deprecated, for more info see {@link https://github.com/ngrx/platform/issues/2980 Github Issue}
+   */
   select<K, Props = any>(
     mapFn: (state: T, props: Props) => K,
     props: Props
@@ -130,9 +136,15 @@ export class Store<T = object> extends Observable<T>
 
 export const STORE_PROVIDERS: Provider[] = [Store];
 
+export function select<T, K>(
+  mapFn: (state: T) => K
+): (source$: Observable<T>) => Observable<K>;
+/**
+ * @deprecated Selectors with props are deprecated, for more info see {@link https://github.com/ngrx/platform/issues/2980 Github Issue}
+ */
 export function select<T, Props, K>(
   mapFn: (state: T, props: Props) => K,
-  props?: Props
+  props: Props
 ): (source$: Observable<T>) => Observable<K>;
 export function select<T, a extends keyof T>(
   key: a

@@ -37,7 +37,7 @@ import {
   USER_PROVIDED_META_REDUCERS,
   _RESOLVED_META_REDUCERS,
   _ROOT_STORE_GUARD,
-  _ACTIVE_RUNTIME_CHECKS,
+  ACTIVE_RUNTIME_CHECKS,
   _ACTION_TYPE_UNIQUENESS_CHECK,
 } from './tokens';
 import { ACTIONS_SUBJECT_PROVIDERS, ActionsSubject } from './actions_subject';
@@ -86,7 +86,8 @@ export class StoreFeatureModule implements OnDestroy {
   ) {
     const feats = features.map((feature, index) => {
       const featureReducerCollection = featureReducers.shift();
-      const reducers = featureReducerCollection /*TODO(#823)*/![index];
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      const reducers = featureReducerCollection! /*TODO(#823)*/[index];
 
       return {
         ...feature,
@@ -98,6 +99,7 @@ export class StoreFeatureModule implements OnDestroy {
     reducerManager.addFeatures(feats);
   }
 
+  // eslint-disable-next-line @angular-eslint/contextual-lifecycle
   ngOnDestroy() {
     this.reducerManager.removeFeatures(this.features);
   }
@@ -112,6 +114,14 @@ export interface StoreConfig<T, V extends Action = Action> {
 export interface RootStoreConfig<T, V extends Action = Action>
   extends StoreConfig<T, V> {
   runtimeChecks?: Partial<RuntimeChecks>;
+}
+
+/**
+ * An object with the name and the reducer for the feature.
+ */
+export interface FeatureSlice<T, V extends Action = Action> {
+  name: string;
+  reducer: ActionReducer<T, V>;
 }
 
 @NgModule({})
@@ -192,13 +202,19 @@ export class StoreModule {
     reducer: ActionReducer<T, V> | InjectionToken<ActionReducer<T, V>>,
     config?: StoreConfig<T, V> | InjectionToken<StoreConfig<T, V>>
   ): ModuleWithProviders<StoreFeatureModule>;
+  static forFeature<T, V extends Action = Action>(
+    slice: FeatureSlice<T, V>,
+    config?: StoreConfig<T, V> | InjectionToken<StoreConfig<T, V>>
+  ): ModuleWithProviders<StoreFeatureModule>;
   static forFeature(
-    featureName: string,
-    reducers:
+    featureNameOrSlice: string | FeatureSlice<any, any>,
+    reducersOrConfig?:
       | ActionReducerMap<any, any>
       | InjectionToken<ActionReducerMap<any, any>>
       | ActionReducer<any, any>
-      | InjectionToken<ActionReducer<any, any>>,
+      | InjectionToken<ActionReducer<any, any>>
+      | StoreConfig<any, any>
+      | InjectionToken<StoreConfig<any, any>>,
     config: StoreConfig<any, any> | InjectionToken<StoreConfig<any, any>> = {}
   ): ModuleWithProviders<StoreFeatureModule> {
     return {
@@ -207,13 +223,16 @@ export class StoreModule {
         {
           provide: _FEATURE_CONFIGS,
           multi: true,
-          useValue: config,
+          useValue: featureNameOrSlice instanceof Object ? {} : config,
         },
         {
           provide: STORE_FEATURES,
           multi: true,
           useValue: {
-            key: featureName,
+            key:
+              featureNameOrSlice instanceof Object
+                ? featureNameOrSlice.name
+                : featureNameOrSlice,
             reducerFactory:
               !(config instanceof InjectionToken) && config.reducerFactory
                 ? config.reducerFactory
@@ -233,12 +252,21 @@ export class StoreModule {
           deps: [Injector, _FEATURE_CONFIGS, STORE_FEATURES],
           useFactory: _createFeatureStore,
         },
-        { provide: _FEATURE_REDUCERS, multi: true, useValue: reducers },
+        {
+          provide: _FEATURE_REDUCERS,
+          multi: true,
+          useValue:
+            featureNameOrSlice instanceof Object
+              ? featureNameOrSlice.reducer
+              : reducersOrConfig,
+        },
         {
           provide: _FEATURE_REDUCERS_TOKEN,
           multi: true,
           useExisting:
-            reducers instanceof InjectionToken ? reducers : _FEATURE_REDUCERS,
+            reducersOrConfig instanceof InjectionToken
+              ? reducersOrConfig
+              : _FEATURE_REDUCERS,
         },
         {
           provide: FEATURE_REDUCERS,

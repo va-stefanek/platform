@@ -4,7 +4,7 @@ import {
   TypedAction,
   FunctionWithParametersType,
   NotAllowedCheck,
-  Props,
+  ActionCreatorProps,
 } from './models';
 import { REGISTERED_ACTION_TYPES } from './globals';
 
@@ -16,7 +16,7 @@ export function createAction<T extends string>(
 ): ActionCreator<T, () => TypedAction<T>>;
 export function createAction<T extends string, P extends object>(
   type: T,
-  config: Props<P> & NotAllowedCheck<P>
+  config: ActionCreatorProps<P> & NotAllowedCheck<P>
 ): ActionCreator<T, (props: P & NotAllowedCheck<P>) => P & TypedAction<T>>;
 export function createAction<
   T extends string,
@@ -24,7 +24,7 @@ export function createAction<
   R extends object
 >(
   type: T,
-  creator: Creator<P, R> & NotAllowedCheck<R>
+  creator: Creator<P, R & NotAllowedCheck<R>>
 ): FunctionWithParametersType<P, R & TypedAction<T>> & TypedAction<T>;
 /**
  * @description
@@ -124,13 +124,15 @@ export function createAction<T extends string, C extends Creator>(
   }
 }
 
-export function props<P extends object>(): Props<P> {
+export function props<P extends object>(): ActionCreatorProps<P> {
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion, @typescript-eslint/naming-convention
   return { _as: 'props', _p: undefined! };
 }
 
 export function union<
   C extends { [key: string]: ActionCreator<string, Creator> }
 >(creators: C): ReturnType<C[keyof C]> {
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
   return undefined!;
 }
 

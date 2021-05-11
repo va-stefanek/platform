@@ -70,7 +70,7 @@ describe('ngRx Integration spec', () => {
       expect(store).toBeDefined();
     });
 
-    it('should combine reducers automatically if a key/value map is provided', () => {
+    it('should combine reducers automatically if a key/value map is provided', (done) => {
       const action = { type: 'Test Action' };
       const reducer$ = TestBed.inject(ReducerManager);
 
@@ -81,6 +81,7 @@ describe('ngRx Integration spec', () => {
         reducer({ todos: [] }, action);
 
         expect(reducers.todos).toHaveBeenCalledWith([], action);
+        done();
       });
     });
 
@@ -416,7 +417,7 @@ describe('ngRx Integration spec', () => {
 
       const store = TestBed.inject(Store);
 
-      let expected = [
+      const expected = [
         {
           todos: initialState.todos,
           visibilityFilter: initialState.visibilityFilter,
@@ -474,7 +475,7 @@ describe('ngRx Integration spec', () => {
         imports: [StoreModule.forRoot({}), RouterTestingModule.withRoutes([])],
       });
 
-      let router = TestBed.inject(Router);
+      const router = TestBed.inject(Router);
       const loader: SpyNgModuleFactoryLoader = TestBed.inject(
         NgModuleFactoryLoader
       ) as SpyNgModuleFactoryLoader;

@@ -15,15 +15,14 @@ import {
   SchematicContext,
 } from '@angular-devkit/schematics';
 import { Schema as ActionOptions } from './schema';
-import {
-  getProjectPath,
-  stringUtils,
-  parseName,
-} from '@ngrx/schematics/schematics-core';
+import { getProjectPath, stringUtils, parseName } from '../../schematics-core';
+
+const DEFAULT_PREFIX = 'load';
 
 export default function (options: ActionOptions): Rule {
   return (host: Tree, context: SchematicContext) => {
     options.path = getProjectPath(host, options);
+    options.prefix = (options.prefix || DEFAULT_PREFIX).toLocaleLowerCase();
 
     const parsedPath = parseName(options.path, options.name);
     options.name = parsedPath.name;

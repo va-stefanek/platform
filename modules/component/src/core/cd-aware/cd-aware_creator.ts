@@ -1,7 +1,10 @@
 import {
   EMPTY,
+  from,
+  isObservable,
   NextObserver,
   Observable,
+  ObservableInput,
   Subject,
   Subscribable,
   Subscription,
@@ -9,13 +12,14 @@ import {
 import {
   catchError,
   distinctUntilChanged,
-  filter,
   switchMap,
   tap,
 } from 'rxjs/operators';
 
 export interface CdAware<U> extends Subscribable<U> {
-  nextPotentialObservable: (value: any) => void;
+  nextPotentialObservable: (
+    value: ObservableInput<any> | null | undefined
+  ) => void;
 }
 
 /**
@@ -32,12 +36,12 @@ export function createCdAware<U>(cfg: {
   resetContextObserver: NextObserver<void>;
   updateViewContextObserver: NextObserver<U | undefined | null>;
 }): CdAware<U | undefined | null> {
-  const potentialObservablesSubject = new Subject<
-    Observable<U> | undefined | null
-  >();
-  const observablesFromTemplate$ = potentialObservablesSubject.pipe(
-    distinctUntilChanged()
-  );
+  const potentialObservablesSubject: Subject<
+    ObservableInput<U> | undefined | null
+  > = new Subject();
+  const observablesFromTemplate$: Observable<
+    ObservableInput<U> | undefined | null
+  > = potentialObservablesSubject.pipe(distinctUntilChanged());
 
   const rendering$ = observablesFromTemplate$.pipe(
     // Compose the observables from the template and the strategy
@@ -54,17 +58,20 @@ export function createCdAware<U>(cfg: {
         return EMPTY;
       }
 
+      const ob$: Observable<U> = isObservable(observable$)
+        ? (observable$ as Observable<U>)
+        : from(observable$);
+
       // If a new Observable arrives, reset the value to render_creator
       // We do this because we don't know when the next value arrives and want to get rid of the old value
       cfg.resetContextObserver.next();
       cfg.render();
 
-      return observable$.pipe(
+      return (ob$ as Observable<U>).pipe(
         distinctUntilChanged(),
         tap(cfg.updateViewContextObserver),
         tap(() => cfg.render()),
         catchError((e) => {
-          console.error(e);
           return EMPTY;
         })
       );
@@ -72,7 +79,9 @@ export function createCdAware<U>(cfg: {
   );
 
   return {
-    nextPotentialObservable(value: Observable<U> | undefined | null): void {
+    nextPotentialObservable(
+      value: ObservableInput<U> | undefined | null
+    ): void {
       potentialObservablesSubject.next(value);
     },
     subscribe(): Subscription {

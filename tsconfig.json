@@ -4,9 +4,9 @@
     "sourceMap": true,
     "declaration": false,
     "moduleResolution": "node",
-    "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "downlevelIteration": true,
+    "emitDecoratorMetadata": true,
     "noStrictGenericChecks": true,
     "lib": ["es2016", "dom"],
     "outDir": "../out-tsc/app",
@@ -16,11 +16,13 @@
     "rootDir": ".",
     "strict": true,
     "paths": {
-      "@ngrx/component": ["modules/component"],
-      "@ngrx/component/schematics-core": ["modules/component/schematics-core"],
-      "@ngrx/component-store": ["modules/component-store"],
+      "@ngrx/component": ["./modules/component"],
+      "@ngrx/component/schematics-core": [
+        "./modules/component/schematics-core"
+      ],
+      "@ngrx/component-store": ["./modules/component-store"],
       "@ngrx/component-store/schematics-core": [
-        "modules/component-store/schematics-core"
+        "./modules/component-store/schematics-core"
       ],
       "@ngrx/data": ["./modules/data"],
       "@ngrx/data/schematics-core": ["./modules/data/schematics-core"],

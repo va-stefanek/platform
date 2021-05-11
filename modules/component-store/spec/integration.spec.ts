@@ -118,6 +118,8 @@ describe('ComponentStore integration', () => {
       state.parent.isChildVisible = false;
       state.fixture.detectChanges();
 
+      state.destroy();
+
       expect(state.componentStoreDestroySpy).toHaveBeenCalled();
     });
   }
@@ -225,6 +227,7 @@ describe('ComponentStore integration', () => {
     const propChanges: string[] = [];
     const prop2Changes: Array<number | undefined> = [];
     const propChangesDebounce: Array<string | undefined> = [];
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     const child = getChild()!;
     child.prop$.subscribe((v) => propChanges.push(v));
     child.prop2$.subscribe((v) => prop2Changes.push(v));

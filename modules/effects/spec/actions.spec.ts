@@ -7,9 +7,7 @@ import {
   createAction,
 } from '@ngrx/store';
 import { Actions, ofType } from '../';
-import { map, toArray, switchMap } from 'rxjs/operators';
-import { hot, cold } from 'jasmine-marbles';
-import { of } from 'rxjs';
+import { map, toArray } from 'rxjs/operators';
 
 describe('Actions', function () {
   let actions$: Actions<AddAction | SubtractAction>;
@@ -48,7 +46,7 @@ describe('Actions', function () {
     dispatcher = injector.get(ScannedActionsSubject);
   });
 
-  it('should be an observable of actions', function () {
+  it('should be an observable of actions', (done) => {
     const actions = [
       { type: ADD },
       { type: SUBTRACT },
@@ -56,12 +54,13 @@ describe('Actions', function () {
       { type: SUBTRACT },
     ];
 
-    let iterations = [...actions];
+    const iterations = [...actions];
 
     actions$.subscribe({
       next(value) {
-        let change = iterations.shift();
-        expect(value.type).toEqual(change!.type);
+        const change = iterations.shift();
+        expect(value.type).toEqual(change?.type);
+        done();
       },
     });
 
@@ -69,7 +68,7 @@ describe('Actions', function () {
     dispatcher.complete();
   });
 
-  it('should filter out actions', () => {
+  it('should filter out actions', (done) => {
     const expected = actions.filter((type) => type === ADD);
 
     actions$
@@ -81,6 +80,7 @@ describe('Actions', function () {
       .subscribe({
         next(actual) {
           expect(actual).toEqual(expected);
+          done();
         },
       });
 
@@ -88,7 +88,7 @@ describe('Actions', function () {
     dispatcher.complete();
   });
 
-  it('should filter out actions and ofType can take an explicit type argument', () => {
+  it('should filter out actions and ofType can take an explicit type argument', (done) => {
     const expected = actions.filter((type) => type === ADD);
 
     actions$
@@ -100,6 +100,7 @@ describe('Actions', function () {
       .subscribe({
         next(actual) {
           expect(actual).toEqual(expected);
+          done();
         },
       });
 
@@ -107,7 +108,7 @@ describe('Actions', function () {
     dispatcher.complete();
   });
 
-  it('should let you filter out multiple action types with explicit type argument', () => {
+  it('should let you filter out multiple action types with explicit type argument', (done) => {
     const expected = actions.filter(
       (type) => type === ADD || type === SUBTRACT
     );
@@ -121,6 +122,7 @@ describe('Actions', function () {
       .subscribe({
         next(actual) {
           expect(actual).toEqual(expected);
+          done();
         },
       });
 
@@ -128,7 +130,7 @@ describe('Actions', function () {
     dispatcher.complete();
   });
 
-  it('should filter out actions by action creator', () => {
+  it('should filter out actions by action creator', (done) => {
     actions$
       .pipe(
         ofType(square),
@@ -138,6 +140,7 @@ describe('Actions', function () {
       .subscribe({
         next(actual) {
           expect(actual).toEqual(['SQUARE']);
+          done();
         },
       });
 
@@ -147,7 +150,7 @@ describe('Actions', function () {
     dispatcher.complete();
   });
 
-  it('should infer the type for the action when it is filter by action creator with property', () => {
+  it('should infer the type for the action when it is filter by action creator with property', (done) => {
     const MULTYPLY_BY = 5;
 
     actions$
@@ -159,6 +162,7 @@ describe('Actions', function () {
       .subscribe({
         next(actual) {
           expect(actual).toEqual([MULTYPLY_BY]);
+          done();
         },
       });
 
@@ -169,7 +173,7 @@ describe('Actions', function () {
     dispatcher.complete();
   });
 
-  it('should infer the type for the action when it is filter by action creator', () => {
+  it('should infer the type for the action when it is filter by action creator', (done) => {
     // Types are not provided for generic Actions
     const untypedActions$: Actions = actions$;
     const MULTYPLY_BY = 5;
@@ -184,6 +188,7 @@ describe('Actions', function () {
       .subscribe({
         next(actual) {
           expect(actual).toEqual([MULTYPLY_BY]);
+          done();
         },
       });
 
@@ -194,7 +199,7 @@ describe('Actions', function () {
     dispatcher.complete();
   });
 
-  it('should filter out multiple actions by action creator', () => {
+  it('should filter out multiple actions by action creator', (done) => {
     const DIVIDE_BY = 3;
     const MULTYPLY_BY = 5;
     const expected = [DIVIDE_BY, MULTYPLY_BY];
@@ -209,6 +214,7 @@ describe('Actions', function () {
       .subscribe({
         next(actual) {
           expect(actual).toEqual(expected);
+          done();
         },
       });
 
@@ -220,7 +226,7 @@ describe('Actions', function () {
     dispatcher.complete();
   });
 
-  it('should filter out actions by action creator and type string', () => {
+  it('should filter out actions by action creator and type string', (done) => {
     const expected = [...actions.filter((type) => type === ADD), square.type];
 
     actions$
@@ -232,6 +238,7 @@ describe('Actions', function () {
       .subscribe({
         next(actual) {
           expect(actual).toEqual(expected);
+          done();
         },
       });
 
@@ -242,7 +249,7 @@ describe('Actions', function () {
     dispatcher.complete();
   });
 
-  it('should filter out actions by action creator and type string, with explicit type argument', () => {
+  it('should filter out actions by action creator and type string, with explicit type argument', (done) => {
     const expected = [...actions.filter((type) => type === ADD), square.type];
 
     actions$
@@ -255,6 +262,7 @@ describe('Actions', function () {
       .subscribe({
         next(actual) {
           expect(actual).toEqual(expected);
+          done();
         },
       });
 
@@ -265,7 +273,7 @@ describe('Actions', function () {
     dispatcher.complete();
   });
 
-  it('should filter out up to 5 actions with type inference', () => {
+  it('should filter out up to 5 actions with type inference', (done) => {
     // Mixing all of them, up to 5
     const expected = [divide.type, ADD, square.type, SUBTRACT, multiply.type];
 
@@ -278,6 +286,7 @@ describe('Actions', function () {
       .subscribe({
         next(actual) {
           expect(actual).toEqual(expected);
+          done();
         },
       });
 
@@ -290,7 +299,7 @@ describe('Actions', function () {
     dispatcher.complete();
   });
 
-  it('should support more than 5 actions', () => {
+  it('should support more than 5 actions', (done) => {
     const log = createAction('logarithm');
     const expected = [
       divide.type,
@@ -311,6 +320,7 @@ describe('Actions', function () {
       .subscribe({
         next(actual) {
           expect(actual).toEqual(expected);
+          done();
         },
       });
 

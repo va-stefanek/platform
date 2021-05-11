@@ -297,16 +297,15 @@ export class AuthEffects {
 
 The `login` action has additional `credentials` metadata which is passed to a service to log the specific user into the application.
 
-However, there may be cases when the required metadata is only accessible from state.  When state is needed, the RxJS `withLatestFrom` operator can be used to provide it.
+However, there may be cases when the required metadata is only accessible from state.  When state is needed, the RxJS `withLatestFrom` or the @ngrx/effects `concatLatestFrom` operators can be used to provide it.
 
 The example below shows the `addBookToCollectionSuccess$` effect displaying a different alert depending on the number of books in the collection state.
 
 <code-example header="collection.effects.ts">
 import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { Actions, ofType, createEffect } from '@ngrx/effects';
-import { of } from 'rxjs';
-import { tap, concatMap, withLatestFrom } from 'rxjs/operators';
+import { Actions, ofType, createEffect, concatLatestFrom } from '@ngrx/effects';
+import { tap } from 'rxjs/operators';
 import { CollectionApiActions } from '../actions';
 import * as fromBooks from '../reducers';
 
@@ -316,9 +315,7 @@ export class CollectionEffects {
     () =>
       this.actions$.pipe(
         ofType(CollectionApiActions.addBookSuccess),
-        concatMap(action => of(action).pipe(
-          withLatestFrom(this.store.select(fromBooks.getCollectionBookIds))
-        )),
+        concatLatestFrom(action => this.store.select(fromBooks.getCollectionBookIds)),
         tap(([action, bookCollection]) => {
           if (bookCollection.length === 1) {
             window.alert('Congrats on adding your first book!');
@@ -339,7 +336,7 @@ export class CollectionEffects {
 
 <div class="alert is-important">
 
-**Note:** For performance reasons, use a flattening operator in combination with `withLatestFrom` to prevent the selector from firing until the correct action is dispatched.
+**Note:** For performance reasons, use a flattening operator like `concatLatestFrom` to prevent the selector from firing until the correct action is dispatched.
 
 </div>
 

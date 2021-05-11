@@ -1,3 +1,141 @@
+<a name="12.0.0-rc.0"></a>
+
+# [12.0.0-rc.0](https://github.com/ngrx/platform/compare/12.0.0-beta.1...12.0.0-rc.0) (2021-05-05)
+
+<a name="12.0.0-beta.1"></a>
+
+# [12.0.0-beta.1](https://github.com/ngrx/platform/compare/12.0.0-beta.0...12.0.0-beta.1) (2021-04-29)
+
+### Bug Fixes
+
+- **schematics:** assert empty as action observable ([#3005](https://github.com/ngrx/platform/issues/3005)) ([61b1ac7](https://github.com/ngrx/platform/commit/61b1ac7)), closes [#2931](https://github.com/ngrx/platform/issues/2931)
+
+<a name="12.0.0-beta.0"></a>
+
+# [12.0.0-beta.0](https://github.com/ngrx/platform/compare/11.1.1...12.0.0-beta.0) (2021-04-27)
+
+### Bug Fixes
+
+- **component:** include files in ng-add schematics ([ad13c9c](https://github.com/ngrx/platform/commit/ad13c9c))
+- **component-store:** include files in ng-add schematics ([bfef622](https://github.com/ngrx/platform/commit/bfef622))
+- **data:** include files in ng-add schematics ([526edd9](https://github.com/ngrx/platform/commit/526edd9))
+- **effects:** ng-add schematics will generate effects files properly ([4389307](https://github.com/ngrx/platform/commit/4389307))
+- **entity:** include files in ng-add schematics ([4d9f647](https://github.com/ngrx/platform/commit/4d9f647))
+- **router-store:** include files in ng-add schematics ([eb71d5c](https://github.com/ngrx/platform/commit/eb71d5c))
+- **store:** ng-add schematics will generate router files if minimal set to false ([74a2671](https://github.com/ngrx/platform/commit/74a2671))
+- **store-devtools:** include files in ng-add schematics ([ac706de](https://github.com/ngrx/platform/commit/ac706de))
+
+### build
+
+- update to Angular libraries to version 12 RC.0 ([#3000](https://github.com/ngrx/platform/issues/3000)) ([4fb030e](https://github.com/ngrx/platform/commit/4fb030e))
+- update to Nx version 12.0.x and TypeScript 4.1.x ([#2999](https://github.com/ngrx/platform/issues/2999)) ([cb258cb](https://github.com/ngrx/platform/commit/cb258cb))
+
+### Features
+
+- **store:** deprecate selectors with props ([#2993](https://github.com/ngrx/platform/issues/2993)) ([7c6d4e4](https://github.com/ngrx/platform/commit/7c6d4e4))
+
+### BREAKING CHANGES
+
+- Minimum versions of Angular and TypeScript have been updated
+
+BEFORE:
+
+Minimum of Angular version 11.x
+Minimum of TypeScript 4.1.x
+
+AFTER:
+
+Minimum of Angular version 12.x
+Minimum of TypeScript 4.2.x
+
+- The minimum TypeScript version has been updated to 4.1.x
+
+BEFORE:
+
+The minimum TypeScript version is 4.0.x
+
+AFTER:
+
+The minimum TypeScript version is 4.1.x
+
+<a name="11.1.1"></a>
+
+## [11.1.1](https://github.com/ngrx/platform/compare/11.1.0...11.1.1) (2021-04-20)
+
+### Bug Fixes
+
+- **store:** adjust types to allow a generic reducer ([#2996](https://github.com/ngrx/platform/issues/2996)) ([7da57bc](https://github.com/ngrx/platform/commit/7da57bc)), closes [#2982](https://github.com/ngrx/platform/issues/2982)
+
+### Features
+
+- **store:** add FunctionWithParametersType to public API ([#2988](https://github.com/ngrx/platform/issues/2988)) ([fe7d058](https://github.com/ngrx/platform/commit/fe7d058)), closes [#2983](https://github.com/ngrx/platform/issues/2983)
+
+<a name="11.1.0"></a>
+
+# [11.1.0](https://github.com/ngrx/platform/compare/11.0.1...11.1.0) (2021-03-31)
+
+### Bug Fixes
+
+- **effects:** add support for Proxy objects in Effects ([#2976](https://github.com/ngrx/platform/issues/2976)) ([5f5b679](https://github.com/ngrx/platform/commit/5f5b679)), closes [#2975](https://github.com/ngrx/platform/issues/2975)
+- **store:** allow default parameters in function action ([#2954](https://github.com/ngrx/platform/issues/2954)) ([9b23403](https://github.com/ngrx/platform/commit/9b23403)), closes [#2948](https://github.com/ngrx/platform/issues/2948)
+- **store:** allow primitive types ([#2967](https://github.com/ngrx/platform/issues/2967)) ([eecc8ce](https://github.com/ngrx/platform/commit/eecc8ce)), closes [#2966](https://github.com/ngrx/platform/issues/2966)
+
+### Features
+
+- **component-store:** add ability for patchState to accept Observable ([#2937](https://github.com/ngrx/platform/issues/2937)) ([8930e22](https://github.com/ngrx/platform/commit/8930e22)), closes [#2852](https://github.com/ngrx/platform/issues/2852)
+- **schematics:** add component store schematics ([#2886](https://github.com/ngrx/platform/issues/2886)) ([f086f80](https://github.com/ngrx/platform/commit/f086f80)), closes [#2570](https://github.com/ngrx/platform/issues/2570)
+
+<a name="11.0.1"></a>
+
+## [11.0.1](https://github.com/ngrx/platform/compare/11.0.0...11.0.1) (2021-02-15)
+
+### Bug Fixes
+
+- **schematics:** add index file ([#2923](https://github.com/ngrx/platform/issues/2923)) ([775c794](https://github.com/ngrx/platform/commit/775c794)), closes [#2917](https://github.com/ngrx/platform/issues/2917)
+- **store:** forFeature using instanceof instead of typeof ([#2922](https://github.com/ngrx/platform/issues/2922)) ([2bea205](https://github.com/ngrx/platform/commit/2bea205)), closes [#2919](https://github.com/ngrx/platform/issues/2919)
+
+<a name="11.0.0"></a>
+
+# [11.0.0](https://github.com/ngrx/platform/compare/11.0.0-rc.0...11.0.0) (2021-02-09)
+
+<a name="11.0.0-rc.0"></a>
+
+# [11.0.0-rc.0](https://github.com/ngrx/platform/compare/11.0.0-beta.2...11.0.0-rc.0) (2021-02-04)
+
+<a name="11.0.0-beta.2"></a>
+
+# [11.0.0-beta.2](https://github.com/ngrx/platform/compare/11.0.0-beta.0...11.0.0-beta.2) (2021-02-02)
+
+### Bug Fixes
+
+- **component:** remove ? from LetViewContext props to prevent 'possibly undefined' error in strict mode ([#2876](https://github.com/ngrx/platform/issues/2876)) ([c3ac252](https://github.com/ngrx/platform/commit/c3ac252))
+- **component:** transform to Observable if Input is Promise ([b611367](https://github.com/ngrx/platform/commit/b611367))
+- **data:** make entity param partial when is not optimistic ([#2899](https://github.com/ngrx/platform/issues/2899)) ([bb70e6c](https://github.com/ngrx/platform/commit/bb70e6c)), closes [#2870](https://github.com/ngrx/platform/issues/2870)
+- **data:** type overloaded add for is optimistic true | undefined ([#2906](https://github.com/ngrx/platform/issues/2906)) ([6d46ac4](https://github.com/ngrx/platform/commit/6d46ac4))
+- **push:** fix return typing for observables to include undefined ([#2907](https://github.com/ngrx/platform/issues/2907)) ([abcc599](https://github.com/ngrx/platform/commit/abcc599)), closes [#2888](https://github.com/ngrx/platform/issues/2888)
+- **router-store:** cast return type as RouterReducerState ([#2887](https://github.com/ngrx/platform/issues/2887)) ([d489484](https://github.com/ngrx/platform/commit/d489484))
+
+### Features
+
+- **effects:** concatLatestFrom operator ([#2760](https://github.com/ngrx/platform/issues/2760)) ([55f0f7a](https://github.com/ngrx/platform/commit/55f0f7a))
+- **effects:** deprecate @Effect decorator ([#2855](https://github.com/ngrx/platform/issues/2855)) ([dbd1ecf](https://github.com/ngrx/platform/commit/dbd1ecf))
+- **store:** add object-style StoreModule.forFeature overload w/fixes ([#2885](https://github.com/ngrx/platform/issues/2885)) ([a9468e1](https://github.com/ngrx/platform/commit/a9468e1)), closes [#2821](https://github.com/ngrx/platform/issues/2821) [#2809](https://github.com/ngrx/platform/issues/2809)
+- **store-devtools:** pass entire error object to the error handler ([#2853](https://github.com/ngrx/platform/issues/2853)) ([ce28b44](https://github.com/ngrx/platform/commit/ce28b44)), closes [#2824](https://github.com/ngrx/platform/issues/2824)
+
+### Performance Improvements
+
+- **schematics:** speed up create effect migration ([#2873](https://github.com/ngrx/platform/issues/2873)) ([2f5dcb4](https://github.com/ngrx/platform/commit/2f5dcb4))
+
+### BREAKING CHANGES
+
+- **push:** BEFORE:
+
+ngrxPush typing doesn't consider `undefined` when the input type is an observable
+
+AFTER:
+
+ngrxPush typing considers `undefined` when the input type is an observable
+
 <a name="11.0.0-beta.0"></a>
 
 # [11.0.0-beta.0](https://github.com/ngrx/platform/compare/10.0.1...11.0.0-beta.0) (2021-01-05)
