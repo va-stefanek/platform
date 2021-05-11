@@ -24,6 +24,10 @@
       "description": "The name of the project.",
       "aliases": ["p"]
     },
+    "prefix": {
+      "type": "string",
+      "description": "The action name prefix"
+    },
     "skipTests": {
       "type": "boolean",
       "description": "When true, does not create test files.",
